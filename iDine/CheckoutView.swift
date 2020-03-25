@@ -17,9 +17,11 @@ struct CheckoutView: View {
     @State private var loyaltyNumber = ""
     @State private var tipAmount = 1
     @State private var showingPaymentAlert = false
+    @State private var pickupType = 0
     
     static let paymentTypes = ["Cash", "Credit Card", "iDine Points"]
     static let tipAmounts = [10, 15, 20, 25, 0]
+    static let pickupTypes = ["Now", "Tonight", "Tomorrow Morning"]
     
     var totalPrice: Double {
         let total = Double(order.total)
@@ -53,6 +55,13 @@ struct CheckoutView: View {
                 .pickerStyle(SegmentedPickerStyle())
             }
             
+            Section(header: Text("Collection")) {
+                Picker("Pickup time", selection: $pickupType) {
+                    ForEach(0 ..< Self.pickupTypes.count) {
+                        Text(Self.pickupTypes[$0])
+                    }
+                }
+            }
             
             
             Section(header: Text("Total $\(totalPrice, specifier: "%.2f")")

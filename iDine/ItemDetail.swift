@@ -13,6 +13,7 @@ struct ItemDetail: View {
     var item: MenuItem
     
     @EnvironmentObject var order: Order
+    @EnvironmentObject var favorites: Favorites
     
     var body: some View {
         VStack {
@@ -29,21 +30,40 @@ struct ItemDetail: View {
             Text(item.description)
                 .padding()
             
-            Button("Order This") {
-                self.order.add(item: self.item)
-            }.font(.headline)
+            
+            VStack(alignment: .center, spacing: 20) {
+                Button("Order This") {
+                    self.order.add(item: self.item)
+                }.font(.headline)
+                .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
+                .background(Color.blue)
+                .foregroundColor(Color.white)
+                .cornerRadius(10)
+                
+                Button("Add to favorite") {
+                    self.favorites.add(item: self.item)
+                }.font(.headline)
+                .padding(EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
+                .background(Color.green)
+                .foregroundColor(Color.white)
+                .cornerRadius(10)
+            }
+            
             
             Spacer()
         }
         .navigationBarTitle(Text(item.name), displayMode: .inline)
+        
     }
 }
 
 struct ItemDetail_Previews: PreviewProvider {
     static let order = Order()
+    static let favorites = Favorites()
     static var previews: some View {
         NavigationView {
             ItemDetail(item: MenuItem.example).environmentObject(order)
+                                                .environmentObject(favorites)
         }
     }
 }
